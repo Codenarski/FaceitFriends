@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		var td1 = document.createElement('td');
 		var td2 = document.createElement('td');
+		td2.setAttribute('id', 'td2');
 
 		var td3 = document.createElement('td');
 		var td4 = document.createElement('td');
@@ -16,14 +17,15 @@ document.addEventListener('DOMContentLoaded', function () {
 		var text1 = document.createTextNode("You: ");
 		var text2 = document.createTextNode(data.profiles[0]);
 
+		const request = getEloFromFaceit(data.profiles[0]).then(elo => { chrome.storage.sync.set({elo}); });
+
 		var text3 = document.createTextNode("Elo: ");
-		var text4 = document.createTextNode("");
+		getPlayerElo();
 		
 		td1.appendChild(text1);
 		td1.appendChild(text2);
 
 		td2.appendChild(text3);
-		td2.appendChild(text4);
 
 		tr1.appendChild(td1);
 		tr2.appendChild(td2);
@@ -39,3 +41,40 @@ document.getElementById("editFriendsButton").onclick = function() {
 }
 
 }, false)
+
+function getPlayerElo() {
+	chrome.storage.sync.get({elo: []}, function(data) {
+		console.log(data.elo);
+		var text = document.createTextNode(data.elo);
+		document.getElementById("td2").append(text);
+	})
+}
+
+function getEloFromFaceit(player) {
+	var faceitElo = 0;
+	return new Promise(function (resolve, reject) {
+		const xhr = new XMLHttpRequest();
+		var url = 'https://open.faceit.com/data/v4/players?nickname='+player;
+		xhr.open('GET', url);
+		xhr.responseType = 'json';
+		xhr.setRequestHeader('Authorization', 'Bearer d7cb89ed-9b51-41e7-b581-86f7f8750bca');
+
+		xhr.onload = function () {
+            if (this.status >= 200 && this.status < 300) {
+                resolve(xhr.response.games.csgo.faceit_elo);
+            } else {
+                reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                });
+            }
+        };
+        xhr.onerror = function () {
+            reject({
+                status: this.status,
+                statusText: xhr.statusText
+            });
+        };
+        xhr.send();
+	})	
+}

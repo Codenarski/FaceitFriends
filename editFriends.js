@@ -13,11 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		}, function() {
 			alert("saved")
 			console.log(profiles)
-		})
-
-		chrome.storage.sync.get(function(profiles) {
-			console.log(profiles)
-		})
+		});
 		
 		window.location.assign("popup.html");
 	} 
