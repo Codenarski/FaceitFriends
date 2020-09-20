@@ -107,7 +107,7 @@ function addClick() {
 	faceitFriendInput.setAttribute("id", inputId);
 	var faceitFriendName = "faceitFriendName";
 	faceitFriendInput.setAttribute("name", faceitFriendName);
-	faceitFriendInput.setAttribute("placeholder", "test");
+	faceitFriendInput.setAttribute("placeholder", "Faceit name");
 	form.appendChild(faceitFriendInput);
 }
 
