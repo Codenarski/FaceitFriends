@@ -1,4 +1,3 @@
-/* globals chrome */
 document.addEventListener('DOMContentLoaded', function () {
 	initPage();
 	fillNameOfUserInInputFieldAtStart();
@@ -86,13 +85,8 @@ function initPage() {
 				return value != "add" && value != "";
 			})
 			profiles = cleanProfiles;
-			chrome.storage.sync.set({
-				profiles
-			}, function () {
-				alert("saved")
-				console.log(profiles)
-			});
-			//window.location.assign("popup.html");
+			chrome.storage.sync.set({ profiles });
+			window.location.assign("popup.html");
 		}
 	})
 }
@@ -124,7 +118,7 @@ function fillNameOfUserInInputFieldAtStart() {
 		for (let index = 0; index < childs.length; index++) {
 			if (index === 0) {
 				childs[index].value = data.profiles[index];
-			} else if(index === 1) {
+			} else if (index === 1) {
 				continue;
 			} else {
 				childs[index].value = data.profiles[index - 1];
