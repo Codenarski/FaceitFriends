@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-
+	//chrome.storage.sync.clear();
 	chrome.storage.sync.get({profiles: []}, function(data) {
 		buildTable(data);
 	})
@@ -13,6 +13,7 @@ document.getElementById("editFriendsButton").onclick = function() {
 
 function getPlayerElo() {
 	chrome.storage.sync.get({elo: []}, function(data) {
+		//TODO: get elo for all player
 		console.log(data.elo);
 		var text = document.createTextNode(data.elo);
 		document.getElementById("td2").append(text);
@@ -20,6 +21,7 @@ function getPlayerElo() {
 }
 
 function buildTable(data) {
+	//TODO build table for all player
 	var table = document.createElement('table');
 
 	var tr1 = document.createElement('tr');   
@@ -64,7 +66,6 @@ function buildTable(data) {
 }
 
 function getEloFromFaceit(player) {
-	var faceitElo = 0;
 	return new Promise(function (resolve, reject) {
 		const xhr = new XMLHttpRequest();
 		var url = 'https://open.faceit.com/data/v4/players?nickname='+player;
