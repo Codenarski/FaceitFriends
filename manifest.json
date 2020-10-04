@@ -5,11 +5,16 @@
     "content_scripts": [
         {
           "matches": ["<all_urls>"],
+          "css": ["css/popup.css", "css/editFriends.css"],
           "js": ["content.js"]
         }
       ],
       "permissions": [
         "storage"
+      ],
+      "web_accessible_resources": [
+        "css/popup.css",
+        "css/editFriends.css"
       ],
       "icons": { 
         "16": "icons/icon16.png",

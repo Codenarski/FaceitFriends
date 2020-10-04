@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
 	//chrome.storage.sync.clear();
-	chrome.storage.sync.get({ profiles: [] }, function (data) {
+	chrome.storage.local.get({ profiles: [] }, function (data) {
 		buildTable(data);
 	})
 
@@ -8,10 +8,14 @@ document.addEventListener('DOMContentLoaded', function () {
 		window.location.assign("editFriends.html");
 	}
 
+	document.getElementById("donationButton").onclick = function () {
+		window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GCMRQ5H74H7QJ", "_blank");
+	}
+
 }, false)
 
 function getPlayerElo(player, element) {
-	chrome.storage.sync.get({ elo: [] }, function (data) {
+	chrome.storage.local.get({ elo: [] }, function (data) {
 		var text = document.createTextNode(data.elo[player]);
 		element.append(text);
 	})
@@ -84,7 +88,7 @@ function getEloFromFaceit(players) {
 			xhr.onload = function () {
 				if (this.status >= 200 && this.status < 300) {
 					elo[index] = xhr.response.games.csgo.faceit_elo;
-					chrome.storage.sync.set({ elo });
+					chrome.storage.local.set({ elo });
 					resolve(xhr.response.games.csgo.faceit_elo);
 				} else {
 					reject({

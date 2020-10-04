@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 }, false)
 
 function initPage() {
-	chrome.storage.sync.get({ profiles: [] }, function (data) {
+	chrome.storage.local.get({ profiles: [] }, function (data) {
 		var br = document.createElement("br");
 
 		var headline = document.createElement("h1");
@@ -30,7 +30,7 @@ function initPage() {
 		inputProfil.setAttribute("type", "text");
 		inputProfil.setAttribute("id", "yourProfilInput");
 		inputProfil.setAttribute("name", "Your Profile");
-		inputProfil.setAttribute("placeholder", "test");
+		inputProfil.setAttribute("placeholder", "Your Faceit name");
 
 		form.appendChild(inputProfil);
 
@@ -52,6 +52,7 @@ function initPage() {
 				var br = document.createElement("br");
 				form.appendChild(br);
 				var faceitFriendLabel = document.createElement("label");
+				faceitFriendLabel.setAttribute('id','faceitFriendLabel: ' + index);
 				var text = "Faceit Friend " + index + ": ";
 				var faceitFriendLabelText = document.createTextNode(text);
 				faceitFriendLabel.appendChild(faceitFriendLabelText);
@@ -63,8 +64,21 @@ function initPage() {
 				faceitFriendInput.setAttribute("id", inputId);
 				var faceitFriendName = "faceitFriendName" + index;
 				faceitFriendInput.setAttribute("name", faceitFriendName);
-				faceitFriendInput.setAttribute("placeholder", "test");
+				faceitFriendInput.setAttribute("placeholder", "Faceit name");
 				form.appendChild(faceitFriendInput);
+
+				var deleteButton = document.createElement("input");
+				deleteButton.setAttribute('id', 'deleteButtonID: ' + index);
+				deleteButton.setAttribute("type", "button");
+				deleteButton.setAttribute("value", "-");
+				form.appendChild(deleteButton);
+				
+				document.getElementById("deleteButtonID: "+ index).onclick = function () {
+					document.getElementById('faceitFriendLabel: ' + index).remove();
+					document.getElementById("faceitFriend" + index + "Input").remove();
+					document.getElementById("deleteButtonID: "+ index).remove();
+				}
+				
 			}
 		}
 		var button = document.createElement("input");
@@ -82,10 +96,10 @@ function initPage() {
 				profiles[index] = childs[index].value;
 			}
 			var cleanProfiles = profiles.filter(function (value, index, arr) {
-				return value != "add" && value != "";
+				return value != "add" && value != "" && value != "-";
 			})
 			profiles = cleanProfiles;
-			chrome.storage.sync.set({ profiles });
+			chrome.storage.local.set({ profiles });
 			window.location.assign("popup.html");
 		}
 	})
@@ -97,31 +111,44 @@ function addClick() {
 	form.appendChild(br);
 	var faceitFriendLabel = document.createElement("label");
 	var text = "Faceit Friend: ";
+	faceitFriendLabel.setAttribute("id", "faceitFriendLabelAdd")
 	var faceitFriendLabelText = document.createTextNode(text);
 	faceitFriendLabel.appendChild(faceitFriendLabelText);
 	form.appendChild(faceitFriendLabel);
 
 	var faceitFriendInput = document.createElement("input");
 	faceitFriendInput.setAttribute("type", "text");
-	var inputId = "faceitFriendInput";
-	faceitFriendInput.setAttribute("id", inputId);
-	var faceitFriendName = "faceitFriendName";
-	faceitFriendInput.setAttribute("name", faceitFriendName);
+	faceitFriendInput.setAttribute("id", "faceitFriendInputAdd");
 	faceitFriendInput.setAttribute("placeholder", "Faceit name");
 	form.appendChild(faceitFriendInput);
+
+	var deleteButton = document.createElement("input");
+	deleteButton.setAttribute('id', 'deleteButtonIDAdd');
+	deleteButton.setAttribute("type", "button");
+	deleteButton.setAttribute("value", "-");
+	form.appendChild(deleteButton);
+	
+	document.getElementById("deleteButtonIDAdd").onclick = function () {
+		document.getElementById('faceitFriendLabelAdd').remove();
+		document.getElementById("faceitFriendInputAdd").remove();
+		document.getElementById("deleteButtonIDAdd").remove();
+	}
 }
 
 function fillNameOfUserInInputFieldAtStart() {
-	chrome.storage.sync.get({ profiles: [] }, function (data) {
+	chrome.storage.local.get({ profiles: [] }, function (data) {
 		var form = document.getElementById("form");
 		var childs = Array.prototype.slice.call(form);
+		var profileNumber = 0;
 		for (let index = 0; index < childs.length; index++) {
 			if (index === 0) {
-				childs[index].value = data.profiles[index];
-			} else if (index === 1) {
+				childs[index].value = data.profiles[profileNumber];
+				profileNumber++;
+			} else if (index === 1 || index % 2 == 1) {
 				continue;
 			} else {
-				childs[index].value = data.profiles[index - 1];
+				childs[index].value = data.profiles[profileNumber];
+				profileNumber++;
 			}
 		}
 	})
