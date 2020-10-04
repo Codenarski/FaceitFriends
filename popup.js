@@ -37,13 +37,17 @@ function buildTable(data) {
 		} else {
 			var text1 = document.createTextNode("Friend " + index + ": ");
 		}
+		var link = document.createElement('a');
 		var text2 = document.createTextNode(data.profiles[index]);
+		link.appendChild(text2);
+		link.href = "https://www.faceit.com/en/players/" + data.profiles[index];
+		link.target = "_blank";
 		const request = getEloFromFaceit(data.profiles);
 		var text3 = document.createTextNode("Elo: ");
 		getPlayerElo(index, td2);
 
 		td1.appendChild(text1);
-		td1.appendChild(text2);
+		td1.appendChild(link);
 
 		td2.appendChild(text3);
 
