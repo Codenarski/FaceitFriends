@@ -1,19 +1,23 @@
-label {
+.faceitFriendsLabel {
     width: 20%;
     padding: 0px 5px 5px 0;
     display: inline-block;
   }
 
-input[type=text] {
+.faceitFriendsInput {
     width: 50%;
     margin-right: 5px;
   }
 
-.defaultButton {
-    width: 15%
+.faceitFriendsDefaultButton {
+    width: 10%
 }
 
-#submit {
+.faceitFriendsDeleteButton {
+  width: 10%;
+}
+
+.faceitFriendsSubmitButton {
     width: 100%;
     padding: 3px;
     cursor: pointer;

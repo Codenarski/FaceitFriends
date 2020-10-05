@@ -68,6 +68,7 @@ function buildTable(data) {
 	var updateButton = document.createElement('button');
 	updateButton.setAttribute('value', 'Update');
 	updateButton.innerHTML = "Update";
+	updateButton.setAttribute("class", "faceitFriendsDefaultButton");
 	updateButton.addEventListener("click", function () {
 		location.reload();
 	});
