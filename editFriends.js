@@ -38,6 +38,7 @@ function initPage() {
 		plusButton.setAttribute("id", "addFriend");
 		plusButton.setAttribute("type", "button");
 		plusButton.setAttribute("value", "add");
+		plusButton.setAttribute("class", "defaultButton");
 
 		plusButton.addEventListener("click", addClick);
 
