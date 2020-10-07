@@ -46,6 +46,7 @@ function buildTable(data) {
 		link.appendChild(text2);
 		link.href = "https://www.faceit.com/en/players/" + data.profiles[index];
 		link.target = "_blank";
+		link.setAttribute("class", "FaceitFriendsPlayerProfilLink");
 		const request = getEloFromFaceit(data.profiles);
 		var text3 = document.createTextNode("Elo: ");
 		getPlayerElo(index, td2);
